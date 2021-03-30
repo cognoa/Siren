@@ -30,7 +30,7 @@ public struct APIManager {
     let countryCode: String?
 
     /// A property that can redirect the version check to a custom URL endpoint for testing purposes.
-    var customUrl: URL?
+    public var customUrl: URL?
 
     /// Initializes `APIManager` to the region or country of an App Store in which the app is available.
     /// By default, all version check requests are performed against the US App Store.
