@@ -28,6 +28,9 @@ public struct APIManager {
     /// The region or country of an App Store in which the app is available.
     let country: AppStoreCountry
 
+    /// A property that can redirect the version check to a custom URL endpoint for testing purposes.
+    public var customUrl: URL?
+
     /// Initializes `APIManager` to the region or country of an App Store in which the app is available.
     /// By default, all version check requests are performed against the US App Store.
     /// - Parameter country: The country for the App Store in which the app is available.
@@ -61,7 +64,8 @@ extension APIManager {
 
         do {
             let url = try makeITunesURL()
-            let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
+            let resolvedUrl = customUrl ?? url
+            let request = URLRequest(url: resolvedUrl, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
             URLSession.shared.dataTask(with: request) { (data, response, error) in
                 URLCache.shared.removeCachedResponse(for: request)
                 self.processVersionCheckResults(withData: data, response: response, error: error, completion: handler)
